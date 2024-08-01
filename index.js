@@ -119,7 +119,7 @@ app.post("/login", async (req, res) => {
 
         // Create Access Token
         const accessToken = jwt.sign({user: publicUser}, JWT_SECRET, {
-            expiresIn: "15m",
+            expiresIn: "45m",
         });
 
         // Create Refresh Token
@@ -133,15 +133,11 @@ app.post("/login", async (req, res) => {
         // Save tokens in cookies
         res.cookie("access_token", accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
             path: "/",
         });
 
         res.cookie("refresh_token", refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
             path: "/",
         });
 
