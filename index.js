@@ -79,14 +79,7 @@ app.use((req, res, next) => {
 });
 
 //mongoose connection
-mongoose.connect(process.env.MONGO_URI, {
-    serverSelectionTimeoutMS: 20000, // 20 seconds
-}).then(() => {
-    console.log('MongoDB connected');
-}).catch(err => {
-    console.error('MongoDB connection error:', err);
-});
-
+mongoose.connect(process.env.MONGO_URI);
 
 app.get("/", (req, res) => {
     res.send(`Node.js version: ${process.version}`);
@@ -119,7 +112,7 @@ app.post("/login", async (req, res) => {
 
         // Create Access Token
         const accessToken = jwt.sign({user: publicUser}, JWT_SECRET, {
-            expiresIn: "45m",
+            expiresIn: "15m",
         });
 
         // Create Refresh Token
@@ -133,14 +126,12 @@ app.post("/login", async (req, res) => {
         // Save tokens in cookies
         res.cookie("access_token", accessToken, {
             httpOnly: true,
-            domain: ".yourdomain.com"
-            path: "/",
+            secure: true,
         });
 
         res.cookie("refresh_token", refreshToken, {
             httpOnly: true,
-            domain: ".yourdomain.com"
-            path: "/",
+            secure: true,
         });
 
         user.refresh_token = refreshToken;
