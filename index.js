@@ -92,16 +92,16 @@ app.post("/login", async (req, res) => {
         const user = await User.findOne({email: email});
 
         if (!user) {
-            throw new Error("User Does Not Exists");
+            throw new Error("User Does Not Exist");
         }
 
-        //compare passwords
+        // Compare passwords
         const checkPwd = await bcrypt.compare(password, user.password);
         if (!checkPwd) {
             throw new Error("Incorrect Password");
         }
 
-        //Remove Password from return object
+        // Remove Password from return object
         const publicUser = {
             email: user.email,
             firstName: user.firstName,
@@ -109,40 +109,42 @@ app.post("/login", async (req, res) => {
             phone: user.phone,
             role: user.role,
         };
-        const JWT_SECRET = process.env.JWT_SECRET;
-        const JWT_SECRET_REFRESH = process.env.JWT_SECRET_REFRESH;
 
-        //Create Access Token
+        // Create Access Token
         const accessToken = jwt.sign({user: publicUser}, JWT_SECRET, {
             expiresIn: "15m",
         });
 
-        //create refresh Token
+        // Create Refresh Token
         const refreshToken = jwt.sign({id: user.id, email: user.email}, JWT_SECRET_REFRESH, {
             expiresIn: "5d",
         });
 
-        //save tokens in cookie
+        console.log("Access Token:", accessToken);
+        console.log("Refresh Token:", refreshToken);
+
+        // Save tokens in cookies
         res.cookie("access_token", accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict", // Add sameSite option for additional security
+            sameSite: "lax",
             path: "/",
         });
 
         res.cookie("refresh_token", refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict", // Add sameSite option for additional security
+            sameSite: "lax",
             path: "/",
         });
 
-        user.refesh_token = refreshToken;
+        user.refresh_token = refreshToken;
         await user.save();
 
         res.json({user: publicUser});
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        res.status(500).json({error: "An error occurred"});
     }
 });
 
@@ -752,5 +754,5 @@ app.delete("/roles/:id", async (req, res) => {
 
 //start the server
 app.listen(PORT, () => {
-    console.log(`Server Running at http://localhost:${PORT}`);
+    console.log(`Server Running at ${PORT}`);
 });
