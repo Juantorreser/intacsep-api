@@ -133,11 +133,13 @@ app.post("/login", async (req, res) => {
         // Save tokens in cookies
         res.cookie("access_token", accessToken, {
             httpOnly: true,
+            domain: ".yourdomain.com"
             path: "/",
         });
 
         res.cookie("refresh_token", refreshToken, {
             httpOnly: true,
+            domain: ".yourdomain.com"
             path: "/",
         });
 
