@@ -324,7 +324,6 @@ app.post("/bitacora", async (req, res) => {
             monitoreo: data.monitoreo,
             cliente: data.cliente,
             operador: data.operador,
-            telefono: data.telefono,
             placa_tracto: data.placaTracto,
             eco_tracto: data.ecoTracto,
             placa_remolque: data.placaRemolque,
@@ -368,7 +367,7 @@ app.patch("/bitacora/:id/event", async (req, res) => {
         // Create a new event
         const newEvent = {
             name,
-            descripcion, // Make sure this matches what is expected
+            description: descripcion, // Make sure this matches what is expected
             ubicacion,
             duracion,
             distancia,
@@ -387,7 +386,6 @@ app.patch("/bitacora/:id/event", async (req, res) => {
         res.status(500).json({message: "Internal server error"});
     }
 });
-
 
 // Endpoint to start a bitacora
 app.patch("/bitacora/:id/start", async (req, res) => {
