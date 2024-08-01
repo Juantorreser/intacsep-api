@@ -1,3 +1,4 @@
+
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -24,10 +25,11 @@ const JWT_SECRET_REFRESH = process.env.JWT_SECRET_REFRESH;
 //midleware
 app.use(
     cors({
-        origin: "http://localhost:5173",
+        origin: ["http://localhost:5173", "https://intacsep.spotynet.com"], // Allow both localhost and the live domain
         credentials: true,
     })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -67,6 +69,10 @@ app.use((req, res, next) => {
 
 //mongoose connection
 mongoose.connect(process.env.MONGO_URI);
+
+app.get("/", (req, res) => {
+    res.send(`Node.js version: ${process.version}`);
+});
 
 app.post("/login", async (req, res) => {
     try {
