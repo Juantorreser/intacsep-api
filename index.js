@@ -356,7 +356,7 @@ app.get("/bitacora/:id", async (req, res) => {
 
 app.patch("/bitacora/:id/event", async (req, res) => {
     const {id} = req.params;
-    const {name, details} = req.body;
+    const {name, details, ubicacion, duracion, distancia} = req.body;
 
     try {
         // Find the bitacora by its ID
@@ -368,7 +368,10 @@ app.patch("/bitacora/:id/event", async (req, res) => {
         // Create a new event
         const newEvent = {
             name,
-            description: details, // Ensure this matches your EventoSchema field
+            description: details, // Make sure this matches what is expected
+            ubicacion,
+            duracion,
+            distancia,
         };
 
         // Add the new event to the bitacora's eventos array
@@ -384,6 +387,7 @@ app.patch("/bitacora/:id/event", async (req, res) => {
         res.status(500).json({message: "Internal server error"});
     }
 });
+
 
 // Endpoint to start a bitacora
 app.patch("/bitacora/:id/start", async (req, res) => {
