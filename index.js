@@ -1,4 +1,3 @@
-
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -23,10 +22,22 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_SECRET_REFRESH = process.env.JWT_SECRET_REFRESH;
 
 //midleware
+const allowedOrigins = [
+    "https://intacsep.spotynet.com", // Production
+    "http://localhost:5173", // Development
+];
+
 app.use(
     cors({
-        origin: ["http://localhost:5173", "https://intacsep.spotynet.com"], // Allow both localhost and the live domain
-        credentials: true,
+        origin: function (origin, callback) {
+            // Allow requests with no origin (like mobile apps or Postman)
+            if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
+        credentials: true, // Allow credentials (cookies, authorization headers, etc.)
     })
 );
 
