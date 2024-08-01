@@ -4,9 +4,14 @@ const EventoSchema = new mongoose.Schema(
     {
         name: {type: String, required: true},
         description: {type: String, required: true},
+        ubicacion: {type: String, default: ""}, // Campo de texto para la ubicación
+        duracion: {type: String, default: ""}, // Campo de texto para la duración
+        distancia: {type: String, default: ""}, // Campo de texto para la distancia
     },
-    {timestamps: true} // This will automatically add `createdAt` and `updatedAt` fields
+    {timestamps: true} // Esto agregará automáticamente los campos `createdAt` y `updatedAt`
 );
+
+
 
 const BitSchema = new mongoose.Schema(
     {
