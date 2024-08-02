@@ -15,6 +15,7 @@ import Role from "./models/Role.js";
 import ClientSequence from "./models/ClientSequence.js";
 import Destino from "./models/Destino.js";
 import Origen from "./models/Origen.js";
+import Operador from "./models/Operador.js";
 
 dotenv.config();
 
@@ -121,9 +122,6 @@ app.post("/login", async (req, res) => {
         const refreshToken = jwt.sign({id: user.id, email: user.email}, JWT_SECRET_REFRESH, {
             expiresIn: "5d",
         });
-
-        console.log("Access Token:", accessToken);
-        console.log("Refresh Token:", refreshToken);
 
         // Save tokens in cookies
         res.cookie("access_token", accessToken, {
