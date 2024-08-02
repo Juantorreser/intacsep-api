@@ -11,11 +11,11 @@ const EventoSchema = new mongoose.Schema(
     {timestamps: true} // Esto agregará automáticamente los campos `createdAt` y `updatedAt`
 );
 
-
-
 const BitSchema = new mongoose.Schema(
     {
         bitacora_id: {type: String, required: true, unique: true},
+        folio_servicio: {type: String, required: true},
+        linea_transporte: {type: String, required: true},
         destino: {type: String, required: true},
         origen: {type: String, required: true},
         monitoreo: {type: String, required: true},
@@ -23,10 +23,21 @@ const BitSchema = new mongoose.Schema(
         enlace: {type: String, required: true},
         id_acceso: {type: String, required: true},
         contra_acceso: {type: String, required: true},
-        placa_remolque: {type: String, required: true},
-        placa_tracto: {type: String, required: true},
-        eco_remolque: {type: String, required: true},
-        eco_tracto: {type: String, required: true},
+        remolque: {
+            eco: String,
+            placa: String,
+            color : String,
+            capacidad: String,
+            sello: String
+        },
+        tracto: {
+            eco: String,
+            placa: String,
+            marca: String,
+            modelo: String,
+            color : String,
+            tipo: String
+        },
         operador: {type: String, required: true},
         inicioMonitoreo: {type: Date},
         finalMonitoreo: {type: Date},
