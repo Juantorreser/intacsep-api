@@ -754,7 +754,7 @@ app.delete("/roles/:id", async (req, res) => {
 
 //ORIGENES
 // Fetch all origenes
-router.get("/origenes", async (req, res) => {
+app.get("/origenes", async (req, res) => {
     try {
         const origenes = await Origen.find();
         res.json(origenes);
@@ -764,7 +764,7 @@ router.get("/origenes", async (req, res) => {
 });
 
 // Create a new origen
-router.post("/origenes", async (req, res) => {
+app.post("/origenes", async (req, res) => {
     try {
         const { name } = req.body;
         const newOrigen = new Origen({ name });
@@ -776,7 +776,7 @@ router.post("/origenes", async (req, res) => {
 });
 
 // Edit an existing origen
-router.put("/origenes/:id", async (req, res) => {
+app.put("/origenes/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const { name } = req.body;
@@ -788,7 +788,7 @@ router.put("/origenes/:id", async (req, res) => {
 });
 
 // Delete an origen
-router.delete("/origenes/:id", async (req, res) => {
+app.delete("/origenes/:id", async (req, res) => {
     try {
         const { id } = req.params;
         await Origen.findByIdAndDelete(id);
@@ -799,7 +799,7 @@ router.delete("/origenes/:id", async (req, res) => {
 });
 
 //DESTINOS
-router.get("/destinos", async (req, res) => {
+app.get("/destinos", async (req, res) => {
     try {
         const destinos = await Destino.find();
         res.status(200).json(destinos);
@@ -809,7 +809,7 @@ router.get("/destinos", async (req, res) => {
 });
 
 // Create a new destino
-router.post("/destinos", async (req, res) => {
+app.post("/destinos", async (req, res) => {
     try {
         const newDestino = new Destino({name: req.body.name});
         const savedDestino = await newDestino.save();
@@ -820,7 +820,7 @@ router.post("/destinos", async (req, res) => {
 });
 
 // Edit a destino
-router.put("/destinos/:id", async (req, res) => {
+app.put("/destinos/:id", async (req, res) => {
     try {
         const updatedDestino = await Destino.findByIdAndUpdate(
             req.params.id,
@@ -834,7 +834,7 @@ router.put("/destinos/:id", async (req, res) => {
 });
 
 // Delete a destino
-router.delete("/destinos/:id", async (req, res) => {
+app.delete("/destinos/:id", async (req, res) => {
     try {
         await Destino.findByIdAndDelete(req.params.id);
         res.status(200).json({message: "Destino deleted successfully"});
@@ -845,7 +845,7 @@ router.delete("/destinos/:id", async (req, res) => {
 
 //OPERADORES
 // Get all operadores
-router.get("/operadores", async (req, res) => {
+app.get("/operadores", async (req, res) => {
     try {
         const operadores = await Operador.find();
         res.status(200).json(operadores);
@@ -855,7 +855,7 @@ router.get("/operadores", async (req, res) => {
 });
 
 // Create a new operador
-router.post("/operadores", async (req, res) => {
+app.post("/operadores", async (req, res) => {
     try {
         const newOperador = new Operador({ name: req.body.name });
         const savedOperador = await newOperador.save();
@@ -866,7 +866,7 @@ router.post("/operadores", async (req, res) => {
 });
 
 // Edit an operador
-router.put("/operadores/:id", async (req, res) => {
+app.put("/operadores/:id", async (req, res) => {
     try {
         const updatedOperador = await Operador.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
         res.status(200).json(updatedOperador);
@@ -876,7 +876,7 @@ router.put("/operadores/:id", async (req, res) => {
 });
 
 // Delete an operador
-router.delete("/operadores/:id", async (req, res) => {
+app.delete("/operadores/:id", async (req, res) => {
     try {
         await Operador.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: "Operador deleted successfully" });
