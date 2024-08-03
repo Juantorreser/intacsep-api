@@ -61,7 +61,6 @@ app.use((req, res, next) => {
     }
 
     const token = req.cookies.access_token; // Retrieve token after the path check
-    req.session = {user: null}; // Initialize session
     console.log(` token: ${token}`);
 
     // Check if the token exists
