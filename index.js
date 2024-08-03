@@ -16,6 +16,7 @@ import ClientSequence from "./models/ClientSequence.js";
 import Destino from "./models/Destino.js";
 import Origen from "./models/Origen.js";
 import Operador from "./models/Operador.js";
+import session from "express-session";
 
 dotenv.config();
 
@@ -46,6 +47,14 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+    session({
+        secret: "your_session_secret", // Replace with your actual secret
+        resave: false,
+        saveUninitialized: true,
+        cookie: {secure: false}, // Set to true if using HTTPS
+    })
+);
 
 //Create Custom Middleware to retreive Token Data
 app.use((req, res, next) => {
