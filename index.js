@@ -171,11 +171,18 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/logout", (req, res) => {
-    res.clearCookie("access_token");
-    res.clearCookie("refresh_token");
-    res.send("Successfull").status(200);
+    res.clearCookie("access_token", {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+    });
+    res.clearCookie("refresh_token", {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+    });
+    res.status(200).send("Successful");
 });
-
 app.post("/protected", (req, res) => {
     const {user} = req.session;
     if (!user) return res.send("Access Denied").status(401);
