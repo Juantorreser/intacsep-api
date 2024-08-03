@@ -80,6 +80,7 @@ app.use((req, res, next) => {
 
     try {
         const data = jwt.verify(token, JWT_SECRET); // Verify the token
+        console.log(data.user);
         req.session.user = data.user; // Store user data in session
     } catch (e) {
         console.log(e);
@@ -193,6 +194,8 @@ app.post("/logout", (req, res) => {
 });
 app.post("/protected", (req, res) => {
     const {user} = req.session;
+    console.log(user);
+
     if (!user) return res.send("Access Denied").status(401);
     res.json({user: user}).status(200);
 });
