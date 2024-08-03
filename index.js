@@ -62,6 +62,7 @@ app.use((req, res, next) => {
 
     const token = req.cookies.access_token; // Retrieve token after the path check
     req.session = {user: null}; // Initialize session
+    console.log(` token: ${token}`);
 
     // Check if the token exists
     if (!token) {
@@ -119,7 +120,7 @@ app.post("/login", async (req, res) => {
         });
 
         // Create Refresh Token
-        const refreshToken = jwt.sign({id: user.id, email: user.email}, JWT_SECRET_REFRESH, {
+        const refreshToken = jwt.sign({id: user._id, email: user.email}, JWT_SECRET_REFRESH, {
             expiresIn: "5d",
         });
 
@@ -127,13 +128,13 @@ app.post("/login", async (req, res) => {
         res.cookie("access_token", accessToken, {
             httpOnly: true,
             sameSite: "Strict", // or "Lax" depending on your needs
-            // secure: true, // Uncomment this line when using HTTPS
+            secure: process.env.NODE_ENV === "production",
         });
 
         res.cookie("refresh_token", refreshToken, {
             httpOnly: true,
             sameSite: "Strict", // or "Lax" depending on your needs
-            // secure: true, // Uncomment this line when using HTTPS
+            secure: process.env.NODE_ENV === "production",
         });
 
         user.refresh_token = refreshToken;
