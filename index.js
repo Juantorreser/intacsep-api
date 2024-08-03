@@ -123,6 +123,9 @@ app.post("/login", async (req, res) => {
             expiresIn: "5d",
         });
 
+        console.log(accessToken);
+        console.log(refreshToken);
+
         // Save tokens in cookies
         res.cookie("access_token", accessToken, {
             httpOnly: true,
