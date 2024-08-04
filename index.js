@@ -49,7 +49,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
     session({
-        secret: "your_session_secret", // Replace with your actual secret
+        secret: process.env.SESSION_SECRET, // Replace with your actual secret
         resave: false,
         saveUninitialized: true,
         cookie: {secure: false}, // Set to true if using HTTPS
