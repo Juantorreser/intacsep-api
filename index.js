@@ -70,7 +70,6 @@ app.use((req, res, next) => {
     }
 
     const token = req.cookies.access_token; // Retrieve token after the path check
-    console.log(` token: ${token}`);
 
     // Check if the token exists
     if (!token) {
@@ -80,7 +79,6 @@ app.use((req, res, next) => {
 
     try {
         const data = jwt.verify(token, JWT_SECRET); // Verify the token
-        console.log(data.user);
         req.session.user = data.user; // Store user data in session
     } catch (e) {
         console.log(e);
@@ -125,7 +123,7 @@ app.post("/login", async (req, res) => {
 
         // Create Access Token
         const accessToken = jwt.sign({user: publicUser}, JWT_SECRET, {
-            expiresIn: "15m",
+            expiresIn: "60m",
         });
 
         // Create Refresh Token
@@ -317,13 +315,28 @@ app.delete("/user/:id", async (req, res) => {
 
 app.get("/bitacoras", async (req, res) => {
     try {
-        const bitacoras = await Bitacora.find();
-        res.status(200).json(bitacoras);
+        // Extract page and limit from query parameters, defaulting to 1 and 25 if not provided
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 25;
+        const skip = (page - 1) * limit;
+
+        // Fetch the total count of bitacoras
+        const totalItems = await Bitacora.countDocuments();
+
+        // Fetch the paginated bitacoras
+        const bitacoras = await Bitacora.find().skip(skip).limit(limit);
+
+        // Respond with the paginated data and total item count
+        res.status(200).json({
+            items: bitacoras,
+            totalItems: totalItems,
+        });
     } catch (e) {
-        console.error("Error fetching  bitácoras:", e);
-        res.status(500).json({error: "An error occurred while fetching past bitácoras."});
+        console.error("Error fetching bitácoras:", e);
+        res.status(500).json({error: "An error occurred while fetching bitácoras."});
     }
 });
+
 
 app.post("/bitacora", async (req, res) => {
     const data = req.body;
