@@ -315,28 +315,13 @@ app.delete("/user/:id", async (req, res) => {
 
 app.get("/bitacoras", async (req, res) => {
     try {
-        // Extract page and limit from query parameters, defaulting to 1 and 25 if not provided
-        const page = parseInt(req.query.page, 10) || 1;
-        const limit = parseInt(req.query.limit, 10) || 25;
-        const skip = (page - 1) * limit;
-
-        // Fetch the total count of bitacoras
-        const totalItems = await Bitacora.countDocuments();
-
-        // Fetch the paginated bitacoras
-        const bitacoras = await Bitacora.find().skip(skip).limit(limit);
-
-        // Respond with the paginated data and total item count
-        res.status(200).json({
-            items: bitacoras,
-            totalItems: totalItems,
-        });
+        const bitacoras = await Bitacora.find();
+        res.status(200).json(bitacoras);
     } catch (e) {
-        console.error("Error fetching bitácoras:", e);
-        res.status(500).json({error: "An error occurred while fetching bitácoras."});
+        console.error("Error fetching  bitácoras:", e);
+        res.status(500).json({error: "An error occurred while fetching past bitácoras."});
     }
 });
-
 
 app.post("/bitacora", async (req, res) => {
     const data = req.body;
