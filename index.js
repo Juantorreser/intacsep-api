@@ -752,6 +752,9 @@ app.post("/roles", async (req, res) => {
         clientes: req.body.clientes,
         usuarios: req.body.usuarios,
         roles: req.body.roles,
+        origenes: req.body.origenes,
+        destinos: req.body.destinos,
+        operadores: req.body.operadores
     });
 
     try {
