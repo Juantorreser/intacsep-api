@@ -440,19 +440,18 @@ app.patch("/bitacora/:id/event", async (req, res) => {
 //Update Bitacora
 app.patch("/bitacora/:id", async (req, res) => {
     const {id} = req.params;
-    const {edited_bitacora} = req.body; // Assuming `edited_bitacora` is sent in the request body
+    const {edited_bitacora} = req.body;
+
+    console.log("Received edited_bitacora:", edited_bitacora); // Add this line to debug
 
     try {
-        // Find the Bitacora document by its ID
         const bitacora = await Bitacora.findById(id);
         if (!bitacora) {
             return res.status(404).json({message: "Bitacora not found"});
         }
 
-        // Update the `edited_bitacora` field
         bitacora.edited_bitacora = edited_bitacora;
 
-        // Save the updated Bitacora document
         const updatedBitacora = await bitacora.save();
         res.json(updatedBitacora);
     } catch (error) {
@@ -460,6 +459,7 @@ app.patch("/bitacora/:id", async (req, res) => {
         res.status(500).json({message: "Internal server error"});
     }
 });
+
 
 
 // Endpoint to start a bitacora
