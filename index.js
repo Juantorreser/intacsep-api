@@ -192,7 +192,6 @@ app.post("/logout", (req, res) => {
 });
 app.post("/protected", (req, res) => {
     const {user} = req.session;
-    console.log(user);
 
     if (!user) return res.send("Access Denied").status(401);
     res.json({user: user}).status(200);
@@ -440,7 +439,7 @@ app.patch("/bitacora/:id/event", async (req, res) => {
 //Update Bitacora
 app.patch("/bitacora/:id", async (req, res) => {
     const {id} = req.params;
-    const {edited_bitacora} = req.body;
+    const edited_bitacora = req.body;
 
     console.log("Received edited_bitacora:", edited_bitacora); // Add this line to debug
 
@@ -805,7 +804,6 @@ app.put("/roles/:id", async (req, res) => {
 app.get("/roles/:roleName", async (req, res) => {
     try {
         const roleName = req.params.roleName;
-        console.log(roleName);
         const role = await Role.findOne({name: roleName});
 
         if (!role) {
